@@ -3,12 +3,10 @@ package com.library.management.model;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.time.LocalDateTime;
+import java.util.UUID;
 
 @Table
 @Entity
@@ -16,7 +14,7 @@ import java.time.LocalDateTime;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class book {
+public class Book {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -33,6 +31,18 @@ public class book {
     private int totalCopies;
     private LocalDateTime createdDate;
     private LocalDateTime modifiedDate;
+
+    @PrePersist
+    public void prePersist() {
+        createdDate = LocalDateTime.now();
+        modifiedDate = LocalDateTime.now();
+        isbn = UUID.randomUUID().toString();
+    }
+
+    @PreUpdate
+    public void preUpdate() {
+        modifiedDate = LocalDateTime.now();
+    }
 
 
 
